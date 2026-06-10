@@ -1,0 +1,59 @@
+// Role types, job statuses, and application stages are stored as strings
+// (SQLite has no enum support); valid values live in lib/constants.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Job {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  roleType     String
+  location     String
+  schedule     String
+  compensation String
+  summary      String
+  description  String
+  requirements String
+  status       String        @default("OPEN")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  applications Application[]
+}
+
+model Application {
+  id              String            @id @default(cuid())
+  job             Job?              @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  jobId           String?
+  roleType        String
+  firstName       String
+  lastName        String
+  email           String
+  phone           String
+  location        String
+  yearsExperience Int
+  certifications  String            @default("")
+  availability    String            @default("")
+  coverNote       String            @default("")
+  resumeName      String?
+  resumeType      String?
+  resumeData      Bytes?
+  stage           String            @default("NEW")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  notes           ApplicationNote[]
+}
+
+model ApplicationNote {
+  id            String      @id @default(cuid())
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  applicationId String
+  body          String
+  createdAt    DateTime     @default(now())
+}
