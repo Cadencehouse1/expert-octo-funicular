@@ -41,6 +41,20 @@ export async function submitApplication(formData: FormData): Promise<ApplyResult
     return { ok: false, error: "Please choose a valid role type." };
   }
 
+  const workAuthorizedRaw = requiredText(formData, "workAuthorized", 5);
+  const hasLicenseRaw = requiredText(formData, "hasLicense", 5);
+  if (
+    !workAuthorizedRaw ||
+    !hasLicenseRaw ||
+    !["yes", "no"].includes(workAuthorizedRaw) ||
+    !["yes", "no"].includes(hasLicenseRaw)
+  ) {
+    return {
+      ok: false,
+      error: "Please answer the work authorization and driver's license questions.",
+    };
+  }
+
   const yearsRaw = requiredText(formData, "yearsExperience", 3);
   const yearsExperience = yearsRaw === null ? NaN : Number(yearsRaw);
   if (!Number.isInteger(yearsExperience) || yearsExperience < 0 || yearsExperience > 60) {
@@ -82,6 +96,10 @@ export async function submitApplication(formData: FormData): Promise<ApplyResult
       phone,
       location,
       yearsExperience,
+      workAuthorized: workAuthorizedRaw === "yes",
+      hasLicense: hasLicenseRaw === "yes",
+      languages: optionalText(formData, "languages", 500),
+      salaryExpectation: optionalText(formData, "salaryExpectation", 200),
       certifications: optionalText(formData, "certifications", 1000),
       availability: optionalText(formData, "availability", 1000),
       coverNote: optionalText(formData, "coverNote", 5000),

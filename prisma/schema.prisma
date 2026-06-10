@@ -41,6 +41,10 @@ model Application {
   certifications  String            @default("")
   availability    String            @default("")
   coverNote       String            @default("")
+  workAuthorized  Boolean           @default(false)
+  hasLicense      Boolean           @default(false)
+  languages       String            @default("")
+  salaryExpectation String          @default("")
   resumeName      String?
   resumeType      String?
   resumeData      Bytes?

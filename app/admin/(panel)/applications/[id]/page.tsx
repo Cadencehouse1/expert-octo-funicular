@@ -68,6 +68,16 @@ export default async function ApplicationDetailPage({
               <Field label="Phone" value={app.phone} />
               <Field label="Location" value={app.location} />
               <Field label="Experience" value={`${app.yearsExperience} years`} />
+              <Field
+                label="Authorized to work in US"
+                value={app.workAuthorized ? "Yes" : "No"}
+              />
+              <Field
+                label="Driver's license"
+                value={app.hasLicense ? "Yes" : "No"}
+              />
+              <Field label="Languages" value={app.languages} />
+              <Field label="Salary expectations" value={app.salaryExpectation} />
               <Field label="Certifications" value={app.certifications} />
               <Field label="Availability" value={app.availability} />
             </div>

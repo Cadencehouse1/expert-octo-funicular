@@ -123,6 +123,57 @@ export function ApplicationForm({
         )}
       </div>
 
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className={labelClass} htmlFor="workAuthorized">
+            Are you legally authorized to work in the US? *
+          </label>
+          <select id="workAuthorized" name="workAuthorized" required defaultValue="" className={inputClass}>
+            <option value="" disabled>
+              Select…
+            </option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="hasLicense">
+            Do you have a valid driver&apos;s license? *
+          </label>
+          <select id="hasLicense" name="hasLicense" required defaultValue="" className={inputClass}>
+            <option value="" disabled>
+              Select…
+            </option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="languages">
+            Languages you speak
+          </label>
+          <input
+            id="languages"
+            name="languages"
+            maxLength={500}
+            placeholder="English, Spanish…"
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="salaryExpectation">
+            Salary / rate expectations
+          </label>
+          <input
+            id="salaryExpectation"
+            name="salaryExpectation"
+            maxLength={200}
+            placeholder="$35–40/hr or $110k/year"
+            className={inputClass}
+          />
+        </div>
+      </div>
+
       <div>
         <label className={labelClass} htmlFor="certifications">
           Certifications &amp; training (CPR, NCS certification, etc.)

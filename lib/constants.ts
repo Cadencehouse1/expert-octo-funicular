@@ -58,4 +58,4 @@ export function isJobStatus(value: string): value is JobStatus {
 }
 
 export const AGENCY_NAME =
-  process.env.NEXT_PUBLIC_AGENCY_NAME ?? "Your Agency";
+  process.env.NEXT_PUBLIC_AGENCY_NAME ?? "Cadence House";
