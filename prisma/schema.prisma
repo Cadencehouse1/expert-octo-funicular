@@ -1,12 +1,12 @@
-// Role types, job statuses, and application stages are stored as strings
-// (SQLite has no enum support); valid values live in lib/constants.ts.
+// Role types, job statuses, and application stages are stored as strings;
+// valid values live in lib/constants.ts.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

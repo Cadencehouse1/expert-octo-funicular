@@ -40,9 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local SQLite database
-prisma/dev.db
-prisma/dev.db-journal
 
 # allow the env template
 !.env.example

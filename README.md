@@ -31,8 +31,7 @@ e-signature, and background-check integration on top of this foundation.
 ## Tech stack
 
 - [Next.js](https://nextjs.org) (App Router) + TypeScript + Tailwind CSS
-- [Prisma](https://prisma.io) ORM — SQLite in development, swap to Postgres
-  for production
+- [Prisma](https://prisma.io) ORM + PostgreSQL
 - Resumes are stored in the database (fine at agency volume; move to object
   storage if files grow)
 - Admin auth: single admin credential from env vars, signed JWT session
@@ -43,7 +42,7 @@ e-signature, and background-check integration on top of this foundation.
 ```bash
 npm install
 cp .env.example .env       # then fill in values (see below)
-npx prisma migrate dev     # creates the SQLite db
+npx prisma migrate dev     # applies migrations to your Postgres db
 npm run db:seed            # optional: 4 sample job postings
 npm run dev                # http://localhost:3000
 ```
@@ -52,22 +51,26 @@ npm run dev                # http://localhost:3000
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` | `file:./dev.db` locally; a Postgres URL in production |
+| `DATABASE_URL` | A PostgreSQL connection string (local Postgres or a free [Neon](https://neon.tech) database) |
 | `SESSION_SECRET` | ≥32 chars; generate with `openssl rand -hex 32` |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Login for `/admin` |
-| `NEXT_PUBLIC_AGENCY_NAME` | Your agency's name, shown across the UI |
+| `NEXT_PUBLIC_AGENCY_NAME` | Agency name shown across the UI (defaults to Cadence House) |
 
-## Deploying (recommended: Vercel + hosted Postgres)
+## Deploying (Vercel + Neon Postgres, free tier)
 
-1. Create a free Postgres database (Supabase, Neon, or Vercel Postgres).
-2. In `prisma/schema.prisma`, change the datasource provider from `sqlite`
-   to `postgresql`, then run `npx prisma migrate dev --name postgres` once
-   locally against the new database to regenerate migrations.
-3. Import this repo into [Vercel](https://vercel.com), set the four env
-   vars above (use the Postgres URL for `DATABASE_URL`).
-4. Add a build command override so migrations run on deploy:
-   `prisma migrate deploy && next build`.
-5. Point a subdomain (e.g. `careers.youragency.com`) at the Vercel project.
+1. Import this repo into [Vercel](https://vercel.com/new) (sign in with
+   GitHub and select the repository).
+2. In the Vercel project: **Storage → Create Database → Neon (Postgres)**.
+   This provisions the database and sets `DATABASE_URL` automatically.
+3. In **Settings → Environment Variables**, add `SESSION_SECRET`,
+   `ADMIN_EMAIL`, and `ADMIN_PASSWORD`.
+4. Deploy. The `vercel-build` script runs database migrations
+   automatically on every deploy.
+5. Optionally seed sample jobs once by running `npm run db:seed` locally
+   with `DATABASE_URL` pointed at the production database — or simply
+   create real postings in `/admin/jobs`.
+6. Point a subdomain (e.g. `careers.cadencehouse.com`) at the Vercel
+   project under **Settings → Domains**.
 
 ## Embedding in WordPress
 
